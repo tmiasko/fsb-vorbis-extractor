@@ -1,0 +1,9 @@
+* Reverse enginer remaining data in FSB header:
+ - looks like to increasing sequences:
+ - a1, b1, a2, b2, ..., an-1, bn-1, an
+ - where ai are offsets within sample data
+  - check if they point at exactly packet boundaries
+  - bi - timestamps?
+* Create README
+* Check LICENSE
+* Create LICENSE
