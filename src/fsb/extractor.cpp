@@ -17,6 +17,7 @@
 #include <glog/logging.h>
 
 #include <fstream>
+#include <iostream>
 
 DEFINE_string(password, "", 
   "password used to encode file");
