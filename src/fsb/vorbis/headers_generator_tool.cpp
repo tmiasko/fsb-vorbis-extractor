@@ -64,7 +64,7 @@ void output_string_literal(
   
 }
 
-int main(int argc, char **argv) {
+int main() {
   // Utility program that is used to generate vorbis_headers.inc file,
   // that contains Vorbis headers for all settings combinations used by FSB:
   // * quality: 1, 2, ..., 100

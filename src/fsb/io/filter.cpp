@@ -19,7 +19,7 @@ namespace fsb { namespace io {
 bool reverse_bits_filter_impl::filter(
   const char * &src_begin, const char * src_end,
   char * &dst_begin, char * dst_end,
-  bool flush) {
+  bool /* flush */) {
     
   while (src_begin != src_end && dst_begin != dst_end) {
     *reinterpret_cast<std::uint8_t*>(dst_begin++) = 
@@ -45,7 +45,7 @@ xor_filter_impl::xor_filter_impl(boost::string_ref key)
 bool xor_filter_impl::filter(
   const char * &src_begin, const char * src_end,
   char * &dst_begin, char * dst_end,
-  bool flush) {
+  bool /* flush */) {
 
   const char * key_begin = key_.data();
   const char * key_end = key_.data() + key_.size();
