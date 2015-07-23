@@ -22,9 +22,9 @@ namespace fsb { namespace io {
 
 // Reverses order of bits in a byte.
 inline std::uint8_t reverse_bits(std::uint8_t x) {
-  x = (x & 0b11110000u) >> 4 | (x & 0b00001111) << 4;
-  x = (x & 0b11001100u) >> 2 | (x & 0b00110011) << 2;
-  x = (x & 0b10101010u) >> 1 | (x & 0b01010101) << 1;
+  x = (x & 0b11110000u) >> 4u | (x & 0b00001111u) << 4u;
+  x = (x & 0b11001100u) >> 2u | (x & 0b00110011u) << 2u;
+  x = (x & 0b10101010u) >> 1u | (x & 0b01010101u) << 1u;
   return x;
 }
 
