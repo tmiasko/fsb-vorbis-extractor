@@ -35,9 +35,6 @@ public:
     std::ostream & stream);
   
   // Rebuilds Vorbis headers and returns them as Ogg packets.
-  //
-  // Caller becomes owner of C allocated memory for packets.
-  // Previous content of packet is overwritten without deallocation.
   static void rebuild_headers(
     int channels, int rate, std::uint32_t crc32,
     ogg_packet_holder & id,
