@@ -37,14 +37,16 @@ target_link_libraries(headers_generator_tool
   glog
   ${Vorbis_LIBRARIES})
 
-add_executable(fsb_test
-  fsb/io/filter_test.cpp
-  fsb/io/utility_test.cpp
-  fsb/vorbis/headers_generator_test.cpp
-  fsb/vorbis/rebuilder_test.cpp
-  fsb/vorbis/vorbis_test.cpp)
-add_test(fsb_test fsb_test)
-target_link_libraries(fsb_test
-  fsb
-  glog
-  gtest gtest_main)
+if(FVE_BUILD_TESTS)
+  add_executable(fsb_test
+    fsb/io/filter_test.cpp
+    fsb/io/utility_test.cpp
+    fsb/vorbis/headers_generator_test.cpp
+    fsb/vorbis/rebuilder_test.cpp
+    fsb/vorbis/vorbis_test.cpp)
+  add_test(fsb_test fsb_test)
+  target_link_libraries(fsb_test
+    fsb
+    glog
+    gtest gtest_main)
+endif()

@@ -9,6 +9,8 @@ mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make
+# Optionally to run tests
+# make test
 
 ./src/extractor container.fsb --destination existing_directory
 ```

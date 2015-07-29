@@ -9,10 +9,20 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(Ogg REQUIRED ogg)
 pkg_check_modules(Vorbis REQUIRED vorbis vorbisenc)
 
-enable_testing()
+set (GTEST_ROOT "/usr/src/gtest/")
+if(EXISTS ${GTEST_ROOT})
+  option (FVE_BUILD_TESTS "Build fsb-vorbis-extractor tests." ON)
+else()
+  message(WARNING "Google test library not found, use GTEST_ROOT to specifiy its location")
+endif()
+
+if (FVE_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(${GTEST_ROOT} gtest)
+endif ()
 
 include_directories(./ ${Ogg_INCLUDE_DIRS} ${Vorbis_INCLUDE_DIRS})
 link_directories(./ ${Ogg_LIBRARY_DIRS} ${Vorbis_LIBRARY_DIRS})
 
-add_subdirectory(/usr/src/gtest/ gtest)
 add_subdirectory(src)
+
