@@ -17,7 +17,7 @@ add_library(fsb STATIC
   fsb/container.hpp
   fsb/fsb.hpp)
 target_link_libraries(fsb
-  glog
+  ${GLog_LIBRARIES}
   ${Ogg_LIBRARIES}
   ${Vorbis_LIBRARIES})
 
@@ -25,8 +25,7 @@ add_executable(extractor
   fsb/extractor.cpp)
 target_link_libraries(extractor
   fsb
-  glog
-  gflags
+  ${GLog_LIBRARIES}
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SYSTEM_LIBRARY})
 
@@ -34,7 +33,7 @@ add_executable(headers_generator_tool
   fsb/vorbis/headers_generator_tool.cpp)
 target_link_libraries(headers_generator_tool
   fsb
-  glog
+  ${GLog_LIBRARIES}
   ${Vorbis_LIBRARIES})
 
 if(FVE_BUILD_TESTS)
@@ -47,6 +46,6 @@ if(FVE_BUILD_TESTS)
   add_test(fsb_test fsb_test)
   target_link_libraries(fsb_test
     fsb
-    glog
+    ${GLog_LIBRARIES}
     gtest gtest_main)
 endif()

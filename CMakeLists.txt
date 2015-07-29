@@ -8,6 +8,7 @@ find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(Ogg REQUIRED ogg)
 pkg_check_modules(Vorbis REQUIRED vorbis vorbisenc)
+pkg_check_modules(GLog REQUIRED libglog)
 
 set (GTEST_ROOT "/usr/src/gtest/")
 if(EXISTS ${GTEST_ROOT})
@@ -21,8 +22,8 @@ if (FVE_BUILD_TESTS)
   add_subdirectory(${GTEST_ROOT} gtest)
 endif ()
 
-include_directories(./ ${Ogg_INCLUDE_DIRS} ${Vorbis_INCLUDE_DIRS})
-link_directories(./ ${Ogg_LIBRARY_DIRS} ${Vorbis_LIBRARY_DIRS})
+include_directories(./ ${Ogg_INCLUDE_DIRS} ${Vorbis_INCLUDE_DIRS} ${GLog_INCLUDE_DIRS})
+link_directories(./ ${Ogg_LIBRARY_DIRS} ${Vorbis_LIBRARY_DIRS} ${GLog_LIBRARY_DIRS})
 
 add_subdirectory(src)
 

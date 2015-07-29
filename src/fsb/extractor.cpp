@@ -13,19 +13,12 @@
 #include "fsb/container.hpp"
 
 #include <boost/filesystem.hpp>
-#include <gflags/gflags.h>
 #include <glog/logging.h>
 
+#include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
-
-DEFINE_string(password, "", 
-  "password used to encode file");
-DEFINE_string(destination, "",
-  "directory where extracted files will be placed, "
-  "current working directory is used by default");
-DEFINE_bool(list, false, 
-  "only list content of container without extracting content");
 
 namespace {
 
@@ -36,17 +29,50 @@ struct extractor_options {
   std::vector<boost::filesystem::path> paths;
 };
 
+void usage(const char *name) {
+  std::cout <<
+    "Usage: " << name << " [OPTION]... [FSB_FILE]...\n"
+    "Extracts or lists content of Vorbis files from FSB5 container.\n"
+    "\n"
+    "Options:\n"
+    "  -h --help         display this help and exit\n"
+    "  -p --password     password used to encode FSB files\n"
+    "  -d --destination  directory where extracted files will be placed,\n"
+    "                    current working directory is used by default\n"
+    "  -l  --list        only list content of container without extracting\n";
+}
+
 extractor_options parse_options(int argc, char **argv) {
   extractor_options options;
-  options.password = FLAGS_password;
-  options.destination = FLAGS_destination.empty() ?
-    boost::filesystem::current_path() : FLAGS_destination;
-  options.extract = !FLAGS_list;
-  
-  for (int i=1; i < argc; ++i) {
-    options.paths.push_back(argv[i]);
+  options.destination = boost::filesystem::current_path();
+  options.extract = true;
+
+  for (int argi=1; argi < argc; ++argi) {
+    const char *arg = argv[argi];
+    if (std::strcmp("--help", arg) == 0 || std::strcmp("-h", arg) == 0) {
+      usage(argv[0]);
+      exit(EXIT_SUCCESS);
+    } else if (std::strcmp("--password", arg) == 0 || std::strcmp("-p", arg) == 0) {
+      CHECK(argi + 1 < argc) << "An argument is required for " << arg << '.';
+      options.password = argv[++argi];
+    } else if (std::strcmp("--destination", arg) == 0 || std::strcmp("-d", arg) == 0) {
+      CHECK(argi + 1 < argc) << "An argument is required for " << arg << '.';
+      options.destination = argv[++argi];
+    } else if (std::strcmp("--list", arg) == 0 || std::strcmp("-l", arg) == 0) {
+      options.extract = false;
+    } else if (std::strcmp("--", arg) == 0) {
+      while (++argi < argc)
+        options.paths.push_back(arg);
+      break;
+    } else if (arg[0] == '-') {
+      std::cerr << "Unrecognized flag: " << arg << std::endl;
+      usage(argv[0]);
+      exit(EXIT_FAILURE);
+    } else {
+      options.paths.push_back(arg);
+    }
   }
-  
+
   return options;
 }
 
@@ -78,12 +104,10 @@ void print_sample(std::ostream & os, const fsb::sample & sample) {
 
 int main(int argc, char **argv) {
   google::InitGoogleLogging(argv[0]);
-  google::SetUsageMessage(std::string(argv[0]) + " file.fsb");
-  google::ParseCommandLineFlags(&argc, &argv, true);
 
-  std::size_t sample_number = 0;
   const extractor_options options = parse_options(argc, argv);
   
+  std::size_t sample_number = 0;
   for (const auto & path : options.paths) {
     std::ifstream stream(path.native(),
       std::ios_base::in | std::ios_base::binary);
@@ -110,7 +134,9 @@ int main(int argc, char **argv) {
             << sample.name << std::endl;
           continue;
         }
+
         std::ofstream output(path.native());
+        CHECK(output) << "Failed to open output file: " << path;
         container.extract_sample(sample, output);
       }
     }

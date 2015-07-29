@@ -27,7 +27,6 @@ sudo aptitude install \
   libboost-filesystem-dev \
   libboost-iostreams-dev \
   libboost-system-dev \
-  libgflags-dev \
   libgoogle-glog-dev \
   libgtest-dev \
   libogg-dev \
