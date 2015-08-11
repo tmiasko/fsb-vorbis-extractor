@@ -42,6 +42,11 @@ public:
   const char * current() const {
     return current_;
   }
+
+  // Returns true if the buffer is empty.
+  bool empty() const {
+    return end_ == begin_;
+  }
   
   // Returns the size of the buffer.
   std::size_t size() const {
