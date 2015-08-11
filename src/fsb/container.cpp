@@ -17,6 +17,7 @@
 #include "fsb/io/utility.hpp"
 #include "fsb/vorbis/rebuilder.hpp"
 
+#include <boost/format.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/utility/string_ref.hpp>
@@ -172,10 +173,14 @@ void container::read_sample_names(std::istream & stream) {
   io::buffer_view names_view(names_buffer.data(), names_buffer.size());
 
   for (std::uint32_t i=0; i < header_.samples; ++i) {
-    names_view.set_offset(i * 4u);
-    names_view.set_offset(names_view.read_uint32());
-    while (char c = names_view.read_char()) {
-      samples_[i].name.push_back(c);
+    if (header_.names_size == 0) {
+      samples_[i].name = (boost::format("sample_%d") % i).str();
+    } else {
+      names_view.set_offset(i * 4u);
+      names_view.set_offset(names_view.read_uint32());
+      while (char c = names_view.read_char()) {
+        samples_[i].name.push_back(c);
+      }
     }
   }
 }
