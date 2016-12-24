@@ -91,7 +91,7 @@ TEST(rebuilder_test, rebuild_id_header) {
 TEST(rebuilder_test, rebuild_comment_header) {
   ogg_packet_holder op;
   
-  rebuilder::rebuild_comment_header(op);
+  rebuilder::rebuild_comment_header(op, 0, 20);
   
   ASSERT_EQ(0, op->b_o_s);
   ASSERT_EQ(0, op->e_o_s);
@@ -156,6 +156,7 @@ TEST_P(generate_and_rebuild_test, headers_are_equivalent) {
 
   rebuilder::rebuild_headers(
     channels, rate, crc32(generator.setup_header()),
+    0, 20,
     op_id_header, op_comment_header, op_setup_header);
 
   // Bitrate fields are not reconstructed, clear them before comparison.

@@ -118,6 +118,8 @@ class vorbis_comment_holder {
 public:
   // Intializes vorbis_comment with vorbis_comment_init,
   vorbis_comment_holder();
+  // Add a tag-comment pair
+  void add_tag(const char *tag, const char *contents);
   // Clears vorbis_comment with vorbis_comment_clear.
   ~vorbis_comment_holder();
   

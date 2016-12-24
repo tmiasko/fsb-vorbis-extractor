@@ -37,6 +37,7 @@ public:
   // Rebuilds Vorbis headers and returns them as Ogg packets.
   static void rebuild_headers(
     int channels, int rate, std::uint32_t crc32,
+    std::uint32_t loop_start, std::uint32_t loop_end,
     ogg_packet_holder & id,
     ogg_packet_holder & comment,
     ogg_packet_holder & setup);
@@ -48,7 +49,8 @@ public:
   
   // Rebuilds comment header.
   static void rebuild_comment_header(
-    ogg_packet_holder & packet);
+    ogg_packet_holder & packet,
+    std::uint32_t loop_start, std::uint32_t loop_end);
   
   // Rebuilds setup header.
   static void rebuild_setup_header(

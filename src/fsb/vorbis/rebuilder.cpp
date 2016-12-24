@@ -41,6 +41,7 @@ void rebuilder::rebuild(
 
     rebuild_headers(
       sample.channels, sample.frequency, sample.vorbis_crc32,
+      sample.loop_start, sample.loop_end,
       header_id, header_comment, header_setup);
     
     CHECK(vorbis_synthesis_headerin(info, comment, header_id) == 0);
@@ -114,6 +115,7 @@ const headers_info * const headers_end = headers + boost::size(headers);
 
 void rebuilder::rebuild_headers(
   int channels, int rate, std::uint32_t crc32,
+  std::uint32_t loop_start, std::uint32_t loop_end,
   ogg_packet_holder & id,
   ogg_packet_holder & comment,
   ogg_packet_holder & setup) {
@@ -124,7 +126,7 @@ void rebuilder::rebuild_headers(
     << "Headers with CRC-32 equal " << crc32 << " not found.";
   
   rebuild_id_header(channels, rate, i->blocksize_short, i->blocksize_long, id);
-  rebuild_comment_header(comment);
+  rebuild_comment_header(comment, loop_start, loop_end);
   rebuild_setup_header(i->setup_header, i->setup_header_size, setup);
 }
 
@@ -193,9 +195,18 @@ void rebuilder::rebuild_id_header(
 }
 
 void rebuilder::rebuild_comment_header(
-  ogg_packet_holder & packet) {
+  ogg_packet_holder & packet,
+  std::uint32_t loop_start, std::uint32_t loop_end) {
   // Comments header are generated using libvorbis for simplicity.
   vorbis_comment_holder comment;
+  std::string s_loop_start;
+  std::string s_loop_stop;
+  if (loop_start != 0 && loop_end != 0) {
+    std::string s_loop_start = std::to_string(loop_start);
+    std::string s_loop_end = std::to_string(loop_end);
+    comment.add_tag("LOOP_START", s_loop_start.c_str());
+    comment.add_tag("LOOP_END", s_loop_end.c_str());
+  }
   packet.clear();
   vorbis_commentheader_out(comment, packet);
 }

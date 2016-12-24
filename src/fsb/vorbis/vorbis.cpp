@@ -66,6 +66,10 @@ vorbis_comment_holder::vorbis_comment_holder() {
   vorbis_comment_init(&value);
 }
 
+void vorbis_comment_holder::add_tag(const char *tag, const char *contents) {
+  vorbis_comment_add_tag(&value, tag, contents);
+}
+
 vorbis_comment_holder::~vorbis_comment_holder() {
   vorbis_comment_clear(&value);
 }
