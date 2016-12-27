@@ -199,11 +199,9 @@ void rebuilder::rebuild_comment_header(
   std::uint32_t loop_start, std::uint32_t loop_end) {
   // Comments header are generated using libvorbis for simplicity.
   vorbis_comment_holder comment;
-  std::string s_loop_start;
-  std::string s_loop_stop;
   if (loop_start != 0 && loop_end != 0) {
-    std::string s_loop_start = std::to_string(loop_start);
-    std::string s_loop_end = std::to_string(loop_end);
+    const std::string s_loop_start = std::to_string(loop_start);
+    const std::string s_loop_end = std::to_string(loop_end);
     comment.add_tag("LOOP_START", s_loop_start.c_str());
     comment.add_tag("LOOP_END", s_loop_end.c_str());
   }
