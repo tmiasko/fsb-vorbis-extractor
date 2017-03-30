@@ -95,12 +95,12 @@ sample container::read_sample_header(io::buffer_view & view) {
   // Bits:
   // 0       has more flags
   // 1 2 3 4 frequency
-  // 6       channels
+  // 5 6     log2(channels)
   // 7       first bit of sample offset
   const std::uint8_t mode = view.read_uint8();
   bool has_extra_headers = mode & 1u;
-  sample.channels  = mode & 32u ? 2 : 1;
-  
+  sample.channels = 1u << ((mode & 96u) >> 5u);
+
   switch ((mode & 31u) >> 1u) {
     case 1u: sample.frequency =  8000u; break;
     case 2u: sample.frequency = 11000u; break;
