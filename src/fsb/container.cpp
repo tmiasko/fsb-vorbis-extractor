@@ -159,7 +159,7 @@ sample container::read_sample_header(io::buffer_view & view) {
         view.skip(extra_length);
         break;
       default:
-        CHECK(false) << "Unexpected extra header type: " << type;
+        CHECK(false) << "Unexpected extra header type: " << int(type) << ", length: " << extra_length;
         view.skip(extra_length);
     }
   }
