@@ -122,8 +122,8 @@ void rebuilder::rebuild_headers(
   
   const auto i =
     std::lower_bound(headers, headers_end, crc32, headers_info_crc32_less());
-  CHECK(i != headers_end && i->crc32 == crc32)
-    << "Headers with CRC-32 equal " << crc32 << " not found.";
+  /*CHECK(i != headers_end && i->crc32 == crc32)
+    << "Headers with CRC-32 equal " << crc32 << " not found.";*/
   
   rebuild_id_header(channels, rate, i->blocksize_short, i->blocksize_long, id);
   rebuild_comment_header(comment, loop_start, loop_end);
