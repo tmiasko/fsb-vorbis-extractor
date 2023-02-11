@@ -139,14 +139,14 @@ void clear_bitrate_fields(const ogg_packet & op) {
 }
 
 class generate_and_rebuild_test
-  : public testing::TestWithParam< std::tr1::tuple<int, int, int>> {
+  : public testing::TestWithParam< std::tuple<int, int, int>> {
 };
 
 
 TEST_P(generate_and_rebuild_test, headers_are_equivalent) {
-  const int channels = std::tr1::get<0>(GetParam());
-  const int rate = std::tr1::get<1>(GetParam());
-  const int quality = std::tr1::get<2>(GetParam());
+  const int channels = std::get<0>(GetParam());
+  const int rate = std::get<1>(GetParam());
+  const int quality = std::get<2>(GetParam());
   
   headers_generator generator(channels, rate, quality);
   
