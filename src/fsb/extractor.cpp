@@ -103,7 +103,9 @@ void print_sample(std::ostream & os, const fsb::sample & sample) {
 }
 
 int main(int argc, char **argv) {
+  FLAGS_stderrthreshold = 0;
   google::InitGoogleLogging(argv[0]);
+  google::InstallFailureSignalHandler();
 
   const extractor_options options = parse_options(argc, argv);
   
@@ -122,6 +124,7 @@ int main(int argc, char **argv) {
     for (auto & sample : container.samples()) {
       sample_number += 1;
       
+      std::cout << sample_number << std::endl;
       print_sample(std::cout, sample);
       std::cout << std::endl;
       

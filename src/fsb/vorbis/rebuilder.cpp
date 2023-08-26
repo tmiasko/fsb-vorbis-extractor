@@ -119,11 +119,10 @@ void rebuilder::rebuild_headers(
   ogg_packet_holder & id,
   ogg_packet_holder & comment,
   ogg_packet_holder & setup) {
-  
   const auto i =
     std::lower_bound(headers, headers_end, crc32, headers_info_crc32_less());
-  CHECK(i != headers_end && i->crc32 == crc32)
-    << "Headers with CRC-32 equal " << crc32 << " not found.";
+  LOG_IF(ERROR, i == headers_end || i->crc32 != crc32)
+    << "CRC " << crc32 << " not found in headers.inc. Using arbitrary code book. The file may be unplayable.";
   
   rebuild_id_header(channels, rate, i->blocksize_short, i->blocksize_long, id);
   rebuild_comment_header(comment, loop_start, loop_end);

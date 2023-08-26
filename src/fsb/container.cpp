@@ -159,7 +159,7 @@ sample container::read_sample_header(io::buffer_view & view) {
         view.skip(extra_length);
         break;
       default:
-        CHECK(false) << "Unexpected extra header type: " << type;
+        LOG_FIRST_N(WARNING, 10) << "Skipping unknown sample header information with type 0x" << std::hex << int(type);
         view.skip(extra_length);
     }
   }
